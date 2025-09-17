@@ -1,4 +1,4 @@
-# LayoffGuard - AI-Powered Employee Risk & Skill Analytics
+# Layoff Prediction System - Employee Risk & Skill Analytics
 
 A comprehensive machine learning system that predicts layoff probability and provides personalized skill development recommendations for employees and strategic insights for HR teams.
 
