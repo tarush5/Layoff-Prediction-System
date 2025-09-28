@@ -31,54 +31,109 @@ export interface PredictionResult {
   }
 }
 
-// Enhanced industry risk mapping with economic indicators
-const INDUSTRY_RISK_MATRIX: Record<string, { baseRisk: number; volatility: number; growthRate: number }> = {
-  Technology: { baseRisk: 25, volatility: 0.8, growthRate: 1.2 },
-  Finance: { baseRisk: 30, volatility: 0.9, growthRate: 0.8 },
-  Healthcare: { baseRisk: 15, volatility: 0.3, growthRate: 1.1 },
-  Education: { baseRisk: 20, volatility: 0.4, growthRate: 0.6 },
-  Retail: { baseRisk: 45, volatility: 1.2, growthRate: 0.4 },
-  Manufacturing: { baseRisk: 35, volatility: 0.7, growthRate: 0.7 },
-  Media: { baseRisk: 50, volatility: 1.1, growthRate: 0.3 },
-  "Real Estate": { baseRisk: 40, volatility: 1.0, growthRate: 0.5 },
-  Energy: { baseRisk: 30, volatility: 0.9, growthRate: 0.8 },
-  Consulting: { baseRisk: 25, volatility: 0.6, growthRate: 0.9 },
-  Government: { baseRisk: 10, volatility: 0.2, growthRate: 0.3 },
-  "Non-profit": { baseRisk: 15, volatility: 0.3, growthRate: 0.4 },
+const INDUSTRY_RISK_MATRIX: Record<
+  string,
+  { baseRisk: number; volatility: number; growthRate: number; automationThreat: number }
+> = {
+  Technology: { baseRisk: 20, volatility: 0.9, growthRate: 1.4, automationThreat: 0.3 },
+  Finance: { baseRisk: 25, volatility: 0.8, growthRate: 0.9, automationThreat: 0.6 },
+  Healthcare: { baseRisk: 12, volatility: 0.3, growthRate: 1.2, automationThreat: 0.2 },
+  Education: { baseRisk: 18, volatility: 0.4, growthRate: 0.7, automationThreat: 0.4 },
+  Retail: { baseRisk: 55, volatility: 1.3, growthRate: 0.3, automationThreat: 0.8 },
+  Manufacturing: { baseRisk: 40, volatility: 0.8, growthRate: 0.6, automationThreat: 0.7 },
+  Media: { baseRisk: 60, volatility: 1.2, growthRate: 0.2, automationThreat: 0.5 },
+  "Real Estate": { baseRisk: 35, volatility: 1.1, growthRate: 0.5, automationThreat: 0.3 },
+  Energy: { baseRisk: 32, volatility: 1.0, growthRate: 0.8, automationThreat: 0.4 },
+  Consulting: { baseRisk: 22, volatility: 0.6, growthRate: 1.0, automationThreat: 0.3 },
+  Government: { baseRisk: 8, volatility: 0.2, growthRate: 0.4, automationThreat: 0.2 },
+  "Non-profit": { baseRisk: 15, volatility: 0.3, growthRate: 0.5, automationThreat: 0.3 },
 }
 
-// Advanced role vulnerability with automation probability
-const ROLE_AUTOMATION_RISK: Record<string, { automationRisk: number; aiImpact: number; futureProof: number }> = {
-  "Software Engineer": { automationRisk: 20, aiImpact: 0.3, futureProof: 0.8 },
-  "Data Scientist": { automationRisk: 15, aiImpact: 0.2, futureProof: 0.9 },
-  "Product Manager": { automationRisk: 25, aiImpact: 0.4, futureProof: 0.7 },
-  "Marketing Manager": { automationRisk: 35, aiImpact: 0.6, futureProof: 0.6 },
-  "Sales Representative": { automationRisk: 40, aiImpact: 0.5, futureProof: 0.5 },
-  "Customer Service": { automationRisk: 60, aiImpact: 0.8, futureProof: 0.3 },
-  "Administrative Assistant": { automationRisk: 70, aiImpact: 0.9, futureProof: 0.2 },
-  Accountant: { automationRisk: 50, aiImpact: 0.7, futureProof: 0.4 },
-  "HR Manager": { automationRisk: 30, aiImpact: 0.4, futureProof: 0.6 },
-  "Operations Manager": { automationRisk: 35, aiImpact: 0.5, futureProof: 0.6 },
-  Designer: { automationRisk: 25, aiImpact: 0.6, futureProof: 0.7 },
-  Analyst: { automationRisk: 45, aiImpact: 0.7, futureProof: 0.5 },
+const ROLE_AUTOMATION_RISK: Record<
+  string,
+  { automationRisk: number; aiImpact: number; futureProof: number; demandGrowth: number }
+> = {
+  "Software Engineer": { automationRisk: 15, aiImpact: 0.4, futureProof: 0.9, demandGrowth: 1.6 },
+  "Data Scientist": { automationRisk: 10, aiImpact: 0.3, futureProof: 0.95, demandGrowth: 1.8 },
+  "Product Manager": { automationRisk: 20, aiImpact: 0.3, futureProof: 0.8, demandGrowth: 1.3 },
+  "Marketing Manager": { automationRisk: 30, aiImpact: 0.5, futureProof: 0.7, demandGrowth: 1.1 },
+  "Sales Representative": { automationRisk: 35, aiImpact: 0.4, futureProof: 0.6, demandGrowth: 0.9 },
+  "Customer Service": { automationRisk: 70, aiImpact: 0.8, futureProof: 0.2, demandGrowth: 0.5 },
+  "Administrative Assistant": { automationRisk: 80, aiImpact: 0.9, futureProof: 0.1, demandGrowth: 0.3 },
+  Accountant: { automationRisk: 60, aiImpact: 0.7, futureProof: 0.3, demandGrowth: 0.6 },
+  "HR Manager": { automationRisk: 25, aiImpact: 0.4, futureProof: 0.7, demandGrowth: 1.0 },
+  "Operations Manager": { automationRisk: 30, aiImpact: 0.4, futureProof: 0.7, demandGrowth: 1.1 },
+  Designer: { automationRisk: 20, aiImpact: 0.6, futureProof: 0.8, demandGrowth: 1.2 },
+  Analyst: { automationRisk: 40, aiImpact: 0.6, futureProof: 0.6, demandGrowth: 1.0 },
+  "Project Manager": { automationRisk: 25, aiImpact: 0.3, futureProof: 0.8, demandGrowth: 1.2 },
+  "DevOps Engineer": { automationRisk: 20, aiImpact: 0.3, futureProof: 0.9, demandGrowth: 1.7 },
+  "Cybersecurity Specialist": { automationRisk: 15, aiImpact: 0.2, futureProof: 0.95, demandGrowth: 1.9 },
+  "UX Designer": { automationRisk: 25, aiImpact: 0.5, futureProof: 0.8, demandGrowth: 1.3 },
+  "Financial Analyst": { automationRisk: 45, aiImpact: 0.6, futureProof: 0.5, demandGrowth: 0.8 },
+  "Content Creator": { automationRisk: 40, aiImpact: 0.7, futureProof: 0.6, demandGrowth: 1.1 },
+  "Research Scientist": { automationRisk: 10, aiImpact: 0.2, futureProof: 0.95, demandGrowth: 1.4 },
+  "Business Analyst": { automationRisk: 35, aiImpact: 0.5, futureProof: 0.6, demandGrowth: 1.0 },
 }
 
-// Future-proof skills with market demand trends
-const SKILL_MARKET_DATA: Record<string, { demandGrowth: number; futureRelevance: number; salaryImpact: number }> = {
-  "Machine Learning": { demandGrowth: 1.5, futureRelevance: 0.95, salaryImpact: 1.3 },
-  Python: { demandGrowth: 1.3, futureRelevance: 0.9, salaryImpact: 1.2 },
-  JavaScript: { demandGrowth: 1.2, futureRelevance: 0.85, salaryImpact: 1.1 },
-  React: { demandGrowth: 1.4, futureRelevance: 0.8, salaryImpact: 1.15 },
-  AWS: { demandGrowth: 1.6, futureRelevance: 0.9, salaryImpact: 1.25 },
-  Docker: { demandGrowth: 1.3, futureRelevance: 0.85, salaryImpact: 1.1 },
-  Cybersecurity: { demandGrowth: 1.7, futureRelevance: 0.95, salaryImpact: 1.4 },
-  "Data Analysis": { demandGrowth: 1.4, futureRelevance: 0.9, salaryImpact: 1.2 },
-  "Project Management": { demandGrowth: 1.1, futureRelevance: 0.8, salaryImpact: 1.05 },
-  Leadership: { demandGrowth: 1.0, futureRelevance: 0.9, salaryImpact: 1.3 },
-  "AI/ML": { demandGrowth: 1.8, futureRelevance: 0.98, salaryImpact: 1.5 },
-  Blockchain: { demandGrowth: 1.2, futureRelevance: 0.7, salaryImpact: 1.2 },
-  DevOps: { demandGrowth: 1.4, futureRelevance: 0.85, salaryImpact: 1.2 },
-  "UX Design": { demandGrowth: 1.1, futureRelevance: 0.8, salaryImpact: 1.1 },
+const SKILL_MARKET_DATA: Record<
+  string,
+  { demandGrowth: number; futureRelevance: number; salaryImpact: number; automationResistance: number }
+> = {
+  // Programming Languages
+  "Machine Learning": { demandGrowth: 1.8, futureRelevance: 0.98, salaryImpact: 1.5, automationResistance: 0.9 },
+  "Artificial Intelligence": {
+    demandGrowth: 1.9,
+    futureRelevance: 0.99,
+    salaryImpact: 1.6,
+    automationResistance: 0.95,
+  },
+  Python: { demandGrowth: 1.5, futureRelevance: 0.95, salaryImpact: 1.3, automationResistance: 0.8 },
+  JavaScript: { demandGrowth: 1.3, futureRelevance: 0.9, salaryImpact: 1.2, automationResistance: 0.7 },
+  TypeScript: { demandGrowth: 1.6, futureRelevance: 0.92, salaryImpact: 1.25, automationResistance: 0.75 },
+  Java: { demandGrowth: 1.1, futureRelevance: 0.85, salaryImpact: 1.15, automationResistance: 0.7 },
+  "C#": { demandGrowth: 1.0, futureRelevance: 0.8, salaryImpact: 1.1, automationResistance: 0.65 },
+  Go: { demandGrowth: 1.4, futureRelevance: 0.88, salaryImpact: 1.3, automationResistance: 0.8 },
+  Rust: { demandGrowth: 1.7, futureRelevance: 0.9, salaryImpact: 1.4, automationResistance: 0.85 },
+
+  // Frontend Technologies
+  React: { demandGrowth: 1.4, futureRelevance: 0.85, salaryImpact: 1.2, automationResistance: 0.6 },
+  "Vue.js": { demandGrowth: 1.2, futureRelevance: 0.8, salaryImpact: 1.1, automationResistance: 0.55 },
+  Angular: { demandGrowth: 1.0, futureRelevance: 0.75, salaryImpact: 1.05, automationResistance: 0.5 },
+  "Next.js": { demandGrowth: 1.6, futureRelevance: 0.88, salaryImpact: 1.25, automationResistance: 0.65 },
+
+  // Cloud & DevOps
+  AWS: { demandGrowth: 1.7, futureRelevance: 0.95, salaryImpact: 1.4, automationResistance: 0.8 },
+  Azure: { demandGrowth: 1.6, futureRelevance: 0.92, salaryImpact: 1.35, automationResistance: 0.78 },
+  "Google Cloud": { demandGrowth: 1.5, futureRelevance: 0.9, salaryImpact: 1.3, automationResistance: 0.75 },
+  Docker: { demandGrowth: 1.4, futureRelevance: 0.9, salaryImpact: 1.2, automationResistance: 0.7 },
+  Kubernetes: { demandGrowth: 1.6, futureRelevance: 0.92, salaryImpact: 1.35, automationResistance: 0.8 },
+  Terraform: { demandGrowth: 1.5, futureRelevance: 0.88, salaryImpact: 1.25, automationResistance: 0.75 },
+
+  // Security
+  Cybersecurity: { demandGrowth: 1.9, futureRelevance: 0.98, salaryImpact: 1.6, automationResistance: 0.9 },
+  "Information Security": { demandGrowth: 1.8, futureRelevance: 0.95, salaryImpact: 1.5, automationResistance: 0.88 },
+  "Network Security": { demandGrowth: 1.7, futureRelevance: 0.92, salaryImpact: 1.4, automationResistance: 0.85 },
+
+  // Data & Analytics
+  "Data Science": { demandGrowth: 1.6, futureRelevance: 0.95, salaryImpact: 1.4, automationResistance: 0.8 },
+  "Data Analysis": { demandGrowth: 1.4, futureRelevance: 0.9, salaryImpact: 1.25, automationResistance: 0.7 },
+  SQL: { demandGrowth: 1.2, futureRelevance: 0.9, salaryImpact: 1.1, automationResistance: 0.6 },
+
+  // Soft Skills
+  Leadership: { demandGrowth: 1.1, futureRelevance: 0.95, salaryImpact: 1.4, automationResistance: 0.95 },
+  "Project Management": { demandGrowth: 1.2, futureRelevance: 0.85, salaryImpact: 1.15, automationResistance: 0.7 },
+  Communication: { demandGrowth: 1.0, futureRelevance: 0.9, salaryImpact: 1.2, automationResistance: 0.9 },
+  "Problem Solving": { demandGrowth: 1.3, futureRelevance: 0.95, salaryImpact: 1.3, automationResistance: 0.85 },
+  "Critical Thinking": { demandGrowth: 1.2, futureRelevance: 0.92, salaryImpact: 1.25, automationResistance: 0.88 },
+
+  // Design
+  "UX/UI Design": { demandGrowth: 1.3, futureRelevance: 0.85, salaryImpact: 1.2, automationResistance: 0.6 },
+  Figma: { demandGrowth: 1.4, futureRelevance: 0.8, salaryImpact: 1.1, automationResistance: 0.5 },
+
+  // Business
+  "Product Management": { demandGrowth: 1.3, futureRelevance: 0.88, salaryImpact: 1.3, automationResistance: 0.8 },
+  "Digital Marketing": { demandGrowth: 1.1, futureRelevance: 0.75, salaryImpact: 1.05, automationResistance: 0.4 },
+  "Financial Analysis": { demandGrowth: 0.9, futureRelevance: 0.7, salaryImpact: 1.1, automationResistance: 0.3 },
 }
 
 export class AdvancedLayoffPredictionEngine {
@@ -190,11 +245,22 @@ export class AdvancedLayoffPredictionEngine {
   private static calculateAdvancedIndustryRisk(industry?: string, marketConditions?: any): number {
     if (!industry) return 50
 
-    const industryData = INDUSTRY_RISK_MATRIX[industry] || { baseRisk: 40, volatility: 0.5, growthRate: 0.5 }
-    const economicMultiplier = marketConditions?.recession ? 1.3 : 1.0
-    const growthAdjustment = (1 - industryData.growthRate) * 20
+    const industryData = INDUSTRY_RISK_MATRIX[industry] || {
+      baseRisk: 40,
+      volatility: 0.5,
+      growthRate: 0.5,
+      automationThreat: 0.5,
+    }
 
-    return Math.min(100, industryData.baseRisk * economicMultiplier + growthAdjustment)
+    const economicMultiplier = marketConditions?.recession ? 1.4 : marketConditions?.inflation > 4 ? 1.2 : 1.0
+    const growthAdjustment = (1 - industryData.growthRate) * 25
+    const automationAdjustment = industryData.automationThreat * 15
+    const volatilityAdjustment = industryData.volatility * 10
+
+    const finalRisk =
+      industryData.baseRisk * economicMultiplier + growthAdjustment + automationAdjustment + volatilityAdjustment
+
+    return Math.min(100, Math.max(0, finalRisk))
   }
 
   private static calculateAdvancedCompanyHealth(healthScore?: number, profile?: Profile): number {
@@ -215,35 +281,94 @@ export class AdvancedLayoffPredictionEngine {
     if (!jobTitle) return 50
 
     const normalizedTitle = jobTitle.toLowerCase()
+
+    let bestMatch = null
+    let bestScore = 0
+
     for (const [role, data] of Object.entries(ROLE_AUTOMATION_RISK)) {
-      if (normalizedTitle.includes(role.toLowerCase())) {
-        // Factor in AI impact and future-proofing
-        return data.automationRisk + data.aiImpact * 30 - data.futureProof * 20
+      const roleWords = role.toLowerCase().split(" ")
+      const titleWords = normalizedTitle.split(" ")
+
+      let matchScore = 0
+      for (const roleWord of roleWords) {
+        for (const titleWord of titleWords) {
+          if (titleWord.includes(roleWord) || roleWord.includes(titleWord)) {
+            matchScore += 1
+          }
+        }
+      }
+
+      if (matchScore > bestScore) {
+        bestScore = matchScore
+        bestMatch = data
       }
     }
-    return 40
+
+    if (bestMatch) {
+      // Enhanced calculation considering AI impact, automation risk, and future-proofing
+      const baseVulnerability = bestMatch.automationRisk
+      const aiAdjustment = bestMatch.aiImpact * 25
+      const futureProofAdjustment = (1 - bestMatch.futureProof) * 30
+      const demandAdjustment = (2 - bestMatch.demandGrowth) * 15
+
+      return Math.min(100, Math.max(0, baseVulnerability + aiAdjustment + futureProofAdjustment + demandAdjustment))
+    }
+
+    return 45 // Default for unknown roles
   }
 
   private static calculateAdvancedSkillRelevance(userSkills: UserSkill[]): number {
-    if (userSkills.length === 0) return 80
+    if (userSkills.length === 0) return 85
 
     let totalRelevanceScore = 0
     let totalWeight = 0
+    let futureProofSkills = 0
 
     userSkills.forEach((skill) => {
       const skillName = skill.skill?.name || ""
-      const skillData = SKILL_MARKET_DATA[skillName] || { demandGrowth: 1.0, futureRelevance: 0.5, salaryImpact: 1.0 }
+      const skillData = SKILL_MARKET_DATA[skillName] || {
+        demandGrowth: 1.0,
+        futureRelevance: 0.5,
+        salaryImpact: 1.0,
+        automationResistance: 0.5,
+      }
 
       const relevanceScore =
-        skillData.futureRelevance * 40 + (skillData.demandGrowth - 1) * 30 + skill.proficiency_level * 2
+        skillData.futureRelevance * 30 +
+        (skillData.demandGrowth - 1) * 25 +
+        skillData.automationResistance * 20 +
+        skill.proficiency_level * 2.5
 
-      const weight = skill.proficiency_level / 10
+      const weight = (skill.proficiency_level / 10) * (skill.years_experience + 1)
       totalRelevanceScore += relevanceScore * weight
       totalWeight += weight
+
+      // Count future-proof skills
+      if (skillData.futureRelevance > 0.8 && skillData.demandGrowth > 1.2) {
+        futureProofSkills++
+      }
     })
 
     const avgRelevance = totalWeight > 0 ? totalRelevanceScore / totalWeight : 50
-    return Math.max(0, 80 - avgRelevance)
+    const futureProofBonus = Math.min(15, futureProofSkills * 3)
+
+    // Convert to risk score (lower relevance = higher risk)
+    return Math.max(0, 90 - avgRelevance - futureProofBonus)
+  }
+
+  private static calculateAdvancedExperienceRisk(experienceYears?: number, jobTitle?: string): number {
+    if (!experienceYears) return 50
+
+    // Experience level risk calculation
+    let experienceRisk = 50 - Math.min(50, experienceYears * 5)
+
+    // Job title-specific adjustments
+    const normalizedTitle = jobTitle?.toLowerCase() || ""
+    if (normalizedTitle.includes("manager") || normalizedTitle.includes("director")) {
+      experienceRisk -= 10 // Managers and directors have lower risk with experience
+    }
+
+    return Math.max(0, experienceRisk)
   }
 
   private static calculateAdvancedMarketDemand(userSkills: UserSkill[], industry?: string): number {
@@ -381,37 +506,93 @@ export class AdvancedLayoffPredictionEngine {
   ): string[] {
     const recommendations: string[] = []
 
-    // AI-powered personalized recommendations
-    if (factors.skillRelevance > 50) {
+    if (factors.skillRelevance > 60) {
       const missingSkills = this.identifyMissingCriticalSkills(userSkills, profile.industry)
-      recommendations.push(`Prioritize learning: ${missingSkills.slice(0, 3).join(", ")}`)
+      if (missingSkills.length > 0) {
+        recommendations.push(
+          `🎯 Priority: Learn ${missingSkills.slice(0, 2).join(" and ")} to stay competitive in your field`,
+        )
+      }
     }
 
-    if (factors.roleVulnerability > 60) {
+    if (factors.roleVulnerability > 70) {
       recommendations.push(
-        "Consider transitioning to AI-resistant roles like strategic planning or creative leadership",
+        "🔄 Consider transitioning to AI-resistant roles like strategic planning, creative leadership, or human-centered roles",
+      )
+    } else if (factors.roleVulnerability > 50) {
+      recommendations.push(
+        "🛡️ Develop complementary skills that make you harder to replace, such as leadership and strategic thinking",
       )
     }
 
+    if (factors.industryRisk > 60) {
+      const industryData = INDUSTRY_RISK_MATRIX[profile.industry || ""]
+      if (industryData && industryData.automationThreat > 0.6) {
+        recommendations.push(
+          "🏭 Your industry faces high automation risk. Consider roles in human-centered aspects of your field",
+        )
+      } else {
+        recommendations.push(
+          "📈 Explore opportunities in growing industries like healthcare, cybersecurity, or renewable energy",
+        )
+      }
+    }
+
     if (factors.adaptabilityScore > 50) {
-      recommendations.push("Develop cross-functional skills to increase career flexibility")
+      recommendations.push(
+        "🎨 Develop cross-functional skills combining technical expertise with creative problem-solving",
+      )
     }
 
     if (factors.networkStrength > 50) {
-      recommendations.push("Strengthen professional network through industry events and mentorship")
+      recommendations.push(
+        "🤝 Strengthen your professional network through industry events, mentorship, and thought leadership",
+      )
+    }
+
+    if (factors.companyHealth > 70) {
+      recommendations.push(
+        "🏢 Your company shows concerning health signals. Update your resume and expand your network",
+      )
     }
 
     if (factors.economicIndicators > 60) {
-      recommendations.push("Build recession-proof skills and consider defensive career moves")
+      recommendations.push(
+        "💰 Build recession-proof skills and consider defensive career moves in essential industries",
+      )
+    }
+
+    // Skill-specific recommendations
+    const hasAISkills = userSkills.some(
+      (s) =>
+        s.skill?.name.toLowerCase().includes("machine learning") ||
+        s.skill?.name.toLowerCase().includes("artificial intelligence"),
+    )
+
+    if (!hasAISkills && factors.roleVulnerability > 40) {
+      recommendations.push("🤖 Learn AI/ML fundamentals to future-proof your career against automation")
+    }
+
+    const hasLeadershipSkills = userSkills.some(
+      (s) => s.skill?.name.toLowerCase().includes("leadership") || s.skill?.name.toLowerCase().includes("management"),
+    )
+
+    if (!hasLeadershipSkills && (profile.experience_years || 0) > 3) {
+      recommendations.push("👥 Develop leadership skills to advance into management roles with lower layoff risk")
     }
 
     // Industry-specific recommendations
-    const industryData = INDUSTRY_RISK_MATRIX[profile.industry || ""]
-    if (industryData && industryData.volatility > 0.8) {
-      recommendations.push("Consider diversifying into more stable industries as a backup plan")
+    if (profile.industry === "Technology" && factors.skillRelevance > 40) {
+      recommendations.push("☁️ Focus on cloud technologies (AWS, Azure) and DevOps skills for high-demand tech roles")
     }
 
-    return recommendations
+    if (profile.industry === "Finance" && factors.roleVulnerability > 50) {
+      recommendations.push(
+        "🔐 Specialize in fintech, cybersecurity, or regulatory compliance to reduce automation risk",
+      )
+    }
+
+    return recommendations.slice(0, 6) // Limit to top 6 recommendations
   }
 
   private static identifyMissingCriticalSkills(userSkills: UserSkill[], industry?: string): string[] {
