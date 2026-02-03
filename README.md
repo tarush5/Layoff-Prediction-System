@@ -1,206 +1,120 @@
-📉 Layoff Prediction System using Machine Learning (XGBoost + SHAP)
-📌 Overview
+# Layoff Prediction System 📉
 
-The Layoff Prediction System is an end-to-end machine learning project designed to analyze historical layoff data and predict the likelihood of layoffs in companies.
-Using advanced feature engineering, an optimized XGBoost classifier, and SHAP-based explainability, this project not only predicts layoffs but also explains why a prediction was made.
+## Overview
+The **Layoff Prediction System** is an end-to-end machine learning project that analyzes historical company layoff data to identify patterns and predict the likelihood of future layoffs.  
+The project uses **XGBoost** for classification and **SHAP (Explainable AI)** to interpret model predictions.
 
-The system focuses on high recall for layoff events, making it particularly useful for early risk detection and workforce planning.
+This system is designed with a strong focus on **early layoff risk detection**, making it useful for workforce planning, investment analysis, and organizational risk assessment.
 
-🚀 Project Objectives
+---
 
-Identify patterns and risk factors associated with company layoffs
+## Project Pipeline
 
-Build a robust binary classification model for layoff prediction
+### 1. Data Loading & Initial Analysis
+- Loaded and inspected the `layoffs.csv` dataset
+- Dataset size: **4,277 rows × 11 columns**
+- Identified missing values and data quality issues
 
-Apply explainable AI (XAI) techniques to interpret model decisions
+### 2. Data Preprocessing & EDA
+- Imputed missing numerical values using **median**
+- Filled missing categorical values with **"Unknown"**
+- Converted date column to `datetime`
+- Performed exploratory data analysis to study distributions and trends
 
-Evaluate model performance rigorously using cross-validation and multiple metrics
+### 3. Feature Engineering
+- Extracted temporal features:
+  - `year`, `month`, `day_of_week`, `quarter`, `day_of_year`
+- Created company-level aggregates:
+  - `total_layoffs_by_company`
+  - `avg_percentage_laid_off_by_company`
+- Engineered financial ratio:
+  - `funds_raised_per_laid_off`
 
-🧠 Project Pipeline
-1️⃣ Data Loading & Initial Assessment
+### 4. Target Variable Definition
+- Defined a binary target variable `is_layoff`:
+  - `0` → if `total_laid_off` equals the median value (88)
+  - `1` → otherwise
+- Resulted in a balanced binary classification problem
 
-Loaded and inspected layoffs.csv
+---
 
-Dataset size: 4,277 rows × 11 columns
+## Model Development
 
-Identified missing values and data type inconsistencies
+### Model Used
+- **XGBoost Classifier**
+- Implemented using a **scikit-learn pipeline**
 
-2️⃣ Data Preprocessing & Exploratory Data Analysis (EDA)
+### Model Training & Optimization
+- Used **Stratified K-Fold Cross-Validation**
+- Hyperparameter tuning performed using **GridSearchCV**
+- Optimization metric: **ROC AUC**
+- Best cross-validation ROC AUC: **0.621**
 
-Imputed missing numerical values using median
+---
 
-Filled missing categorical values with "Unknown"
+## Model Performance (Test Set)
 
-Converted date column to datetime
+| Metric | Score |
+|------|------|
+| Accuracy | 0.662 |
+| Precision | 0.662 |
+| Recall (Layoff Class) | 0.989 |
+| F1-Score | 0.793 |
+| ROC AUC | 0.647 |
+| PR AUC | 0.776 |
 
-Performed EDA to understand:
+### Classification Report
 
-Layoff distributions
+          precision    recall  f1-score   support
 
-Industry and location trends
+       0       0.68      0.04      0.08       296
+       1       0.66      0.99      0.79       560
 
-Funding vs layoffs relationships
+accuracy                           0.66       856
 
-3️⃣ Advanced Feature Engineering
 
-Created meaningful features to improve model learning:
+---
 
-Temporal Features
+## Model Explainability (XAI)
+- Used **SHAP (SHapley Additive Explanations)** for model interpretability
+- Analyzed both global and individual predictions
+- Key influential features:
+  - `funds_raised`
+  - `industry`
+  - `location`
+  - `total_layoffs_by_company`
 
-year, month, day_of_week
+---
 
-quarter, day_of_year
+## Key Insights
+- The model achieves **very high recall for layoff prediction**, making it suitable for early risk identification
+- Company funding, industry, and historical layoff patterns strongly influence predictions
+- SHAP improves transparency and trust in model decisions
 
-Company-Level Aggregates
+---
 
-total_layoffs_by_company
+## Limitations
+- Very low recall for the **No-Layoff** class, leading to false positives
+- Moderate ROC AUC indicates room for performance improvement
 
-avg_percentage_laid_off_by_company
+---
 
-Financial Ratio
+## Future Improvements
+- Apply class imbalance techniques (SMOTE, ADASYN, class weighting)
+- Enhance feature engineering with interaction and advanced temporal features
+- Experiment with alternative models (LightGBM, CatBoost)
+- Integrate external economic and financial data
+- Optimize classification threshold based on business needs
 
-funds_raised_per_laid_off
+---
 
-4️⃣ Target Variable Definition
+## Tech Stack
+- **Language**: Python  
+- **Machine Learning**: XGBoost  
+- **Libraries**: Pandas, NumPy, Scikit-learn, SHAP, Matplotlib, Seaborn  
 
-To ensure a usable binary classification task:
+---
 
-Defined is_layoff as:
-
-0 → if total_laid_off == median (88)
-
-1 → otherwise
-
-This resulted in a balanced-enough dataset suitable for training:
-
-Class 1 (Layoff): 2237
-
-Class 0 (No Layoff): 1184
-
-5️⃣ Model Training
-
-Implemented an XGBoost Classifier
-
-Built a scikit-learn pipeline including preprocessing
-
-Used Stratified K-Fold Cross Validation for robustness
-
-6️⃣ Model Optimization
-
-Performed hyperparameter tuning using GridSearchCV
-
-Optimization metric: ROC AUC
-
-Best cross-validation ROC AUC: 0.6210
-
-7️⃣ Model Interpretation (Explainable AI)
-
-Applied SHAP (SHapley Additive Explanations) for interpretability
-
-Generated:
-
-Global feature importance (SHAP summary plots)
-
-Local explanations (force plots)
-
-Key influential features included:
-
-funds_raised
-
-industry
-
-location
-
-total_layoffs_by_company
-
-📊 Model Performance (Test Set)
-Metric	Score
-Accuracy	0.6624
-Precision	0.6619
-Recall (Layoff Class)	0.9893
-F1-Score	0.7931
-ROC AUC	0.6474
-PR AUC	0.7756
-📄 Classification Report
-              precision    recall  f1-score   support
-
-           0       0.68      0.04      0.08       296
-           1       0.66      0.99      0.79       560
-
-    accuracy                           0.66       856
-   macro avg       0.67      0.52      0.44       856
-weighted avg       0.67      0.66      0.55       856
-
-🔍 Key Insights
-
-The model achieves very high recall for layoff prediction, making it suitable for early risk detection
-
-Explainability via SHAP ensures transparent and interpretable predictions
-
-Company funding, industry, and historical layoff behavior strongly influence predictions
-
-🧩 Potential Use Cases
-
-Risk Assessment: Identify companies at high risk of layoffs
-
-Strategic Planning: Support decision-making for employees, investors, and HR teams
-
-Workforce Analytics: Monitor layoff trends across industries and regions
-
-⚠️ Limitations
-
-Low recall for “No Layoff” class (0.04)
-→ The model is biased toward predicting layoffs, leading to false positives
-
-Moderate ROC AUC (0.6474)
-→ Indicates room for improvement in class separation
-
-🔮 Future Enhancements
-
-Apply class imbalance techniques:
-
-SMOTE / ADASYN
-
-Cost-sensitive learning
-
-Class-weight tuning in XGBoost
-
-Improve feature engineering with:
-
-Interaction features
-
-Advanced temporal patterns
-
-Experiment with alternative models:
-
-LightGBM
-
-CatBoost
-
-Ensemble stacking
-
-Integrate external data sources:
-
-Economic indicators
-
-Company financial health
-
-News sentiment analysis
-
-Optimize decision thresholds based on business impact
-
-🛠️ Tech Stack
-
-Programming Language: Python
-
-ML Model: XGBoost
-
-Libraries:
-
-Pandas, NumPy
-
-Scikit-learn
-
-SHAP
-
-Matplotlib, Seaborn
+## Conclusion
+This project demonstrates a complete machine learning workflow—from data preprocessing and feature engineering to model optimization and explainable AI.  
+With further enhancements, the system can evolve into a powerful tool for layoff risk analysis and decision support.
